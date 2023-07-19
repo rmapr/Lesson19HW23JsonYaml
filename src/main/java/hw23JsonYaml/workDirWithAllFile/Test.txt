@@ -1,0 +1,2 @@
+Test read text from a file.
+Successfully

@@ -2,6 +2,7 @@ package hw23JsonYaml.service;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.nio.file.StandardOpenOption;
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
 import hw23JsonYaml.entity.FileInfo;
 import hw23JsonYaml.entity.InitDataPath;
 import hw23JsonYaml.exception.ErrorConvertException;
@@ -43,6 +45,7 @@ public class ServiceFile {
         FileInfo fileInfo = new FileInfo();
         InitDataPath initDataPath = new InitDataPath();
         Path oldNameFile = path;
+
 //        create dir converted
         File fileDir = new File(path.getParent().toString(), "/converted");
         if (!fileDir.exists()) {
@@ -57,22 +60,21 @@ public class ServiceFile {
 //read string with Json file
             String jsonString = readToString(path.toString());
 
-//            ObjectMapper objectMapperYaml = new ObjectMapper(new YAMLFactory());
             ObjectMapper objectMapperYaml = new ObjectMapper();
 
             Map[] map;
             File newNameFileYaml = new File(fileDir, oldNameFile.getFileName().toString().replace(".json", ".yaml"));
 
-//                Поки така примитивна перевірка для масиву (
+//                Поки така примитивна перевірка для масиву (, на інше потрібен час
             if (jsonString.contains("[{") && (!jsonString.contains("}]"))
                     || (!jsonString.contains("[{") && (jsonString.contains("}]")))) {
                 throw new ErrorConvertException(path, fileInfo, "Error file format!!!");
             }
             try {
-//                Поки така примитивна перевірка для масиву (
+//                Поки така примитивна перевірка для масиву (, на інше потрібен час
                 if (jsonString.contains("[{") && (jsonString.contains("}]"))) {
                     map = objectMapperYaml.readValue(jsonString, Map[].class);
-                    //        write new Yaml file
+//        write new Yaml file
                     objectMapperYaml.writeValue(newNameFileYaml, map);
                 } else {
                     objectMapperYaml.writeValue(newNameFileYaml, jsonString);
@@ -80,7 +82,6 @@ public class ServiceFile {
             } catch (Exception e) {
                 throw new ErrorConvertException(path, fileInfo, "Error file format!!!");
             }
-
 
             fileInfo.setNewfileName(newNameFileYaml.toPath().getFileName()); // write new fileName
             fileInfo.setNewSize(Files.size(newNameFileYaml.toPath())); // write new size file
@@ -102,8 +103,8 @@ public class ServiceFile {
 
             ObjectMapper objectMapperJson = new ObjectMapper(new JsonFactory());
             File newNameFileJson = new File(fileDir, oldNameFile.getFileName().toString().replace(".yaml", ".json"));
-//                objectMapperJson.writeValue(newNameFileJson, yamlString);
 
+//                objectMapperJson.writeValue(newNameFileJson, yamlString);
             objectMapperJson.writeValue(newNameFileJson, obj);
             fileInfo.setNewfileName(newNameFileJson.toPath().getFileName()); // write new fileName
             fileInfo.setNewSize(Files.size(newNameFileJson.toPath())); // write new size file
@@ -122,7 +123,7 @@ public class ServiceFile {
         }
 //        write in log file
         try {
-            System.out.println(fileInfo.getOldfileName().toString());
+//            System.out.println(fileInfo.getOldfileName().toString());
             String result;
             if (fileInfo.getErrorConvert().equals("")) {
 

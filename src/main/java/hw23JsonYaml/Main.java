@@ -9,19 +9,20 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
 
         InitDataPath initDataPath = new InitDataPath();
         ServiceFile serviceFile = new ServiceFile();
 
         initDataPath.initPath(args);
         Path rootDir = initDataPath.getPathWorkDir();
-
-        List<File> stringList = serviceFile.listFile(rootDir);
-        System.out.println(stringList);
-
-        for (File s : stringList) {
+        List<File> fileList = serviceFile.listFile(rootDir);
+        if (!fileList.isEmpty()) {
+            for (File s : fileList) {
                 serviceFile.saveResult(s.toPath(), serviceFile.fileConvert(s.toPath()));
+            }
+        } else {
+            System.out.println("В директорії " + rootDir + " файлів *.json / *.yaml не має!");
         }
     }
 }

@@ -22,7 +22,6 @@ public void initPath (String[] args) {
         path = Path.of(String.valueOf(FileSystems.getDefault().getPath("").toAbsolutePath()));
     } else path = Path.of(args[0]);
     System.out.println("Current working directory is : " + path);
-    System.out.println("--------------");
     this.pathWorkDir = path;
 }
 
